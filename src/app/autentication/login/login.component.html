@@ -1,0 +1,46 @@
+<div class="login-page">
+    <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            <mat-card class="login-card text-center align-middle">
+                <div class="login-logo">
+                    <img src="assets/img/site/logo.png" width="200px" alt="Logo Image">
+                </div>
+                <p class="login-box-msg">Login to Customer Management</p>
+                <form (ngSubmit)="login()">
+                    <div class="row">
+                        <div class="col div-input">
+                            <mat-form-field [ngClass]="{'mat-form-field-invalid': messageError}">
+                                <input [formControl]="emailControl" type="email" matInput placeholder="E-mail">
+                                <mat-icon matSuffix>email</mat-icon>
+                                <mat-error *ngIf="emailControl.hasError('required')">
+                                    E-mail is required
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field [ngClass]="{'mat-form-field-invalid': messageError}">
+                                <input
+                                    [formControl]="passwordControl" matInput placeholder="Password"
+                                    [type]="visible ? 'text' : 'password'">
+                                <mat-icon matSuffix (click)="visible = !visible">
+                                    {{visible ? 'visibility' : 'visibility_off'}}
+                                </mat-icon>
+                                <mat-error *ngIf="passwordControl.hasError('required')">
+                                    Password is required
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-error *ngIf="messageError">
+                                {{ messageError }}
+                            </mat-error>
+                            <mat-progress-bar *ngIf="form.disabled" mode="indeterminate"></mat-progress-bar>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button class="mt-3 btn-login" type="submit" mat-stroked-button>Sign in</button>
+                        </div>
+                    </div>
+                </form>
+            </mat-card>
+        </div>
+    </div>
+</div>

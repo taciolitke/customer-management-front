@@ -1,0 +1,9 @@
+<mat-toolbar *ngIf="currentUser" class="mat-elevation-z2 mb-3" color="primary">
+    <mat-toolbar-row>
+        <a [routerLink]="['/home']">
+            <mat-icon>home</mat-icon>
+        </a>
+        <span class="flex-spacer"></span>
+        <app-menu [currentUser]="currentUser"></app-menu>
+    </mat-toolbar-row>
+</mat-toolbar>

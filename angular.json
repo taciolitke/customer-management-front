@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "CustomarManagement": {
+    "CustomerManagement": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/CustomarManagement",
+            "outputPath": "dist/CustomerManagement",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -27,6 +27,8 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -61,18 +63,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "CustomarManagement:build"
+            "browserTarget": "CustomerManagement:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "CustomarManagement:build:production"
+              "browserTarget": "CustomerManagement:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "CustomarManagement:build"
+            "browserTarget": "CustomerManagement:build"
           }
         },
         "test": {
@@ -87,6 +89,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -109,15 +112,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "CustomarManagement:serve"
+            "devServerTarget": "CustomerManagement:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "CustomarManagement:serve:production"
+              "devServerTarget": "CustomerManagement:serve:production"
             }
           }
         }
       }
-    }},
-  "defaultProject": "CustomarManagement"
+    }
+  },
+  "defaultProject": "CustomerManagement"
 }

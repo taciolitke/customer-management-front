@@ -1,0 +1,4 @@
+<button mat-button [matMenuTriggerFor]="menu">{{ currentUser.email }}</button>
+<mat-menu #menu="matMenu">
+  <button (click)="exit()" mat-menu-item><mat-icon>exit_to_app</mat-icon> Exit</button>
+</mat-menu>

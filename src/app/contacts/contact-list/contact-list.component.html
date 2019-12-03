@@ -1,0 +1,191 @@
+<div class="container">
+    <h1 class="display-6">Customers List</h1>
+    <mat-card>
+        <div class="row">
+            <div class="col">
+                <mat-accordion class="example-headers-align">
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <mat-icon>search</mat-icon> Customers Filter
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <form (ngSubmit)="search()">
+                            <div class="row">
+                                <div class="col">
+                                    <mat-form-field>
+                                        <input [formControl]="nameFilter" matInput placeholder="Name">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col">
+                                    <mat-form-field>
+                                        <mat-label>Gender</mat-label>
+                                        <mat-select [formControl]="genderFilter">
+                                            <mat-option [value]="">
+                                                All
+                                            </mat-option>
+                                            <mat-option value="Female">
+                                                Female
+                                            </mat-option>
+                                            <mat-option value="Male">
+                                                Male
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <mat-form-field>
+                                        <mat-label>City</mat-label>
+                                        <input type="text" placeholder="serach city" matInput [formControl]="cityFilter"
+                                            [matAutocomplete]="cityAutoComplete">
+                                        <mat-autocomplete autoActiveFirstOption #cityAutoComplete="matAutocomplete"
+                                            [displayWith]="displayLocationFn">
+
+                                            <mat-option *ngFor="let location of filteredLocations | async"
+                                                [value]="location">
+                                                {{ location.capital }}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <mat-error *ngIf="cityFilter.hasError('checkExistsOnListkWithAtribute')">
+                                            Locations is invalid.
+                                        </mat-error>
+                                        <mat-error *ngIf="cityFilter.hasError('checkExistsOnList')">
+                                            Locations is invalid.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col">
+                                    <mat-form-field>
+                                        <input [formControl]="regionFilter" matInput placeholder="Region">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <mat-form-field>
+                                        <input matInput placeholder="Last Purshase Start"
+                                            [formControl]="lastPurchaseStartFilter" [matDatepicker]="lastPushaseStart"
+                                            maskPi="99/99/9999">
+
+                                        <mat-datepicker-toggle matSuffix [for]="lastPushaseStart">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #lastPushaseStart></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col">
+                                    <mat-form-field>
+                                        <input matInput placeholder="Last Purshase End"
+                                            [formControl]="lastPurchaseEndFilter" [matDatepicker]="lastPurchaseEnd"
+                                            maskPi="99/99/9999">
+
+                                        <mat-datepicker-toggle matSuffix [for]="lastPurchaseEnd">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #lastPurchaseEnd></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <mat-form-field>
+                                        <mat-label>Classification</mat-label>
+                                        <mat-select [formControl]="classificationFilter">
+                                            <mat-option [value]="">
+                                                All
+                                            </mat-option>
+                                            <mat-option *ngFor="let classification of classifications"
+                                                [value]="classification">
+                                                {{ classification }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col" *ngIf="currentUser.isAdministrator">
+                                    <mat-form-field>
+                                        <mat-label>Seller</mat-label>
+                                        <mat-select [formControl]="sellerFilter">
+                                            <mat-option [value]="">
+                                                All
+                                            </mat-option>
+                                            <mat-option *ngFor="let seller of sellers" [value]="seller">
+                                                {{ seller }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <mat-action-row>
+                                <button mat-stroked-button color="primary" type="submit">
+                                    <mat-icon>search</mat-icon> Search
+                                </button>
+                                <button mat-stroked-button color="primary" type="button" (click)="clearFields()">
+                                    <mat-icon>clear_all</mat-icon> Clear Fields
+                                </button>
+                            </mat-action-row>
+                        </form>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+        <div class="row" *ngIf="loading">
+            <div class="col">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+            </div>
+        </div>
+        <div class="row" *ngIf="!loading">
+            <div class="col">
+                <table mat-table [dataSource]="dataSource" class="table-striped table-bordered mb-3 mt-3">
+
+                    <ng-container matColumnDef="classification">
+                        <th mat-header-cell *matHeaderCellDef> Classification </th>
+                        <td mat-cell *matCellDef="let element"> {{element.classification}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="phone">
+                        <th mat-header-cell *matHeaderCellDef> Phone </th>
+                        <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="gender">
+                        <th mat-header-cell *matHeaderCellDef> Gender </th>
+                        <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="city">
+                        <th mat-header-cell *matHeaderCellDef> City </th>
+                        <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="region">
+                        <th mat-header-cell *matHeaderCellDef> Region </th>
+                        <td mat-cell *matCellDef="let element"> {{element.region}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="lastPurchase">
+                        <th mat-header-cell *matHeaderCellDef> Last Purchase </th>
+                        <td mat-cell *matCellDef="let element"> {{element.lastPurchase | date: 'MM/dd/yyyy'}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="seller" *ngIf="currentUser.isAdministrator">
+                        <th mat-header-cell *matHeaderCellDef> Seller </th>
+                        <td mat-cell *matCellDef="let element"> {{element.seller}} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <p class="text-center" *ngIf="dataSource.data && dataSource.data.length == 0">
+                    No records found
+                </p>
+            </div>
+        </div>
+    </mat-card>
+
+</div>

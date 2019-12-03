@@ -1,6 +1,10 @@
-# CustomarManagement
+# CustomerManagement
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.1.
+
+# Backend Api endpoint
+
+Change the settings.ts file for alter endpoint api. The constant value key ENDPOINT_DEFAULT. Default value: 'https://localhost:5001/';
 
 ## Development server
 
